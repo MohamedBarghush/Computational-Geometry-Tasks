@@ -1,7 +1,7 @@
 # Computational-Geometry-Tasks
 
-## Implemented Algorithms
+### Implemented Algorithms
 
-### Convex Hull
-- Extreme Points ✅
-- Extreme Segments ✅
+- #### Convex Hull
+  - Extreme Points ✅
+  - Extreme Segments ✅
