@@ -19,6 +19,9 @@ CGAlgorithmsUnitTest/bin/*
 CGUtilitiesUnitTest/bin/*
 CGUtilitiesUnitTest/obj/*
 
+.vs/
+.vs/*
+
 
 
 /CGPackage.v11.suo
