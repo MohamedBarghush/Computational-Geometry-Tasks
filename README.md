@@ -6,3 +6,4 @@
   - Extreme Points ✅
   - Extreme Segments ✅
   - Graham ✅
+  - Incremental (ongoing)
