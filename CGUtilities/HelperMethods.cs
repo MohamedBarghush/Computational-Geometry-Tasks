@@ -48,6 +48,35 @@ namespace CGUtilities
         {
             return a.X * b.Y - a.Y * b.X;
         }
+
+        public static double CalculateAngle(Point point1, Point point2, Point point3)
+        {
+            // Create vectors A and B
+            double Ax = point2.X - point1.X;
+            double Ay = point2.Y - point1.Y;
+            double Bx = point3.X - point2.X;
+            double By = point3.Y - point2.Y;
+
+            // Calculate dot product
+            double dotProduct = Ax * Bx + Ay * By;
+
+            // Calculate magnitudes
+            double magnitudeA = Math.Sqrt(Ax * Ax + Ay * Ay);
+            double magnitudeB = Math.Sqrt(Bx * Bx + By * By);
+
+            // Calculate cosine of the angle
+            double cosTheta = dotProduct / (magnitudeA * magnitudeB);
+
+            // Clamp the value to the range [-1, 1] to avoid NaN from floating-point precision errors
+            cosTheta = Math.Max(-1, Math.Min(1, cosTheta));
+
+            // Calculate angle in radians and then convert to degrees
+            double angleInRadians = Math.Acos(cosTheta);
+            double angleInDegrees = angleInRadians * (180 / Math.PI);
+
+            return angleInDegrees; // Return the angle in degrees
+        }
+
         public static bool PointOnRay(Point p, Point a, Point b)
         {
             if (a.Equals(b)) return true;
