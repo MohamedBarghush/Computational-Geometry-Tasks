@@ -6,4 +6,8 @@
   - Extreme Points ✅
   - Extreme Segments ✅
   - Graham ✅
-  - Incremental (ongoing)
+  - Incremental ✅
+  - Jarvis March ✅
+  - QuickHull ⌛
+  - incremental ⌛
+  

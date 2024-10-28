@@ -34,7 +34,6 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                     }
                 }
             }
-
             outPoints = extremePoints.ToList();
         }
 
