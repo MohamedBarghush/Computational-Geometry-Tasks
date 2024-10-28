@@ -7,3 +7,4 @@
   - Extreme Segments ✅
   - Graham ✅
   - Jarvis March ✅
+  - QuickHull ⌛
