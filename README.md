@@ -7,7 +7,7 @@
   - Extreme Segments ✅
   - Graham ✅
   - Jarvis March ✅
-  - QuickHull ⌛ (Amir)
+  - QuickHull ✅
   - incremental ⌛ (Bahnas)
   - D&C ⌛ (Amir)
   - Line Intersection ⌛ (Bahnas)
