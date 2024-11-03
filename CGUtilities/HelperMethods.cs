@@ -115,5 +115,11 @@ namespace CGUtilities
         {
             return l.Start.Vector(l.End);
         }
+
+        // Returns a positive value for counterclockwise, negative for clockwise, and zero if collinear.
+        public static double Orientation(Point p, Point q, Point r)
+        {
+            return (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y);
+        }
     }
 }

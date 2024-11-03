@@ -25,68 +25,47 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                 return;
             }
 
-            
-            List<Point> stk = new List<Point>(); // tracking the current polygon
-            int startIdx = -1;
+            // Sort points by x-coordinate, and by y-coordinate if x-coordinates are the same
+            points = points.OrderBy(p => p.X).ThenBy(p => p.Y).ToList();
 
-            // find non colinear 3 points to start with
-            for(int i = 0; i < points.Count; i++)
+            List<Point> lower = new List<Point>();
+            foreach (var p in points)
             {
-                if (HelperMethods.CheckTurn(new Line(points[i], points[(i + 1)%points.Count]), points[(i + 2)%points.Count]) == Enums.TurnType.Colinear) continue;
-
-                // The current 3 points are valid
-                stk.Add(points[i]);
-                stk.Add(points[(1+i)%points.Count]);
-                stk.Add(points[(2+i)%points.Count]);
-                startIdx = i;
-                
-
-                break;
-            }
-
-            if (startIdx == -1) // they are all colinear
-            {
-                foreach (Point p in points) outPoints.Add(p);
-                for (int i = 0; i < points.Count; i++)
+                // Remove points from the lower hull if they cause a clockwise turn
+                while (lower.Count >= 2 && HelperMethods.Orientation(lower[lower.Count - 2], lower[lower.Count - 1], p) <= 0)
                 {
-                    outLines.Add(new Line(points[i], points[(i + 1) % points.Count]));
+                    lower.RemoveAt(lower.Count - 1);
                 }
-                outPolygons.Add(new Polygon(outLines));
-                return;
+                lower.Add(p);
             }
-
-            for(int idx = 3; idx < points.Count; idx++)
+            List<Point> upper = new List<Point>();
+            for (int i = points.Count - 1; i >= 0; i--)
             {
-                int i = (idx + startIdx) % points.Count;
-                Point curP = points[i];
-
+                var p = points[i];
+                // Remove points from the upper hull if they cause a clockwise turn
+                while (upper.Count >= 2 && HelperMethods.Orientation(upper[upper.Count - 2], upper[upper.Count - 1], p) <= 0)
+                {
+                    upper.RemoveAt(upper.Count - 1);
+                }
+                upper.Add(p);
             }
 
+            // Remove the last point of each half as they are duplicated
+            lower.RemoveAt(lower.Count - 1);
+            upper.RemoveAt(upper.Count - 1);
 
+            // Concatenate lower and upper hulls to get the complete convex hull
+            lower.AddRange(upper);
+
+            foreach (Point p in lower) outPoints.Add(p);
+            for (int i = 0; i < lower.Count; i++)
+            {
+                outLines.Add(new Line(lower[i], lower[(i + 1) % lower.Count]));
+            }
+            outPolygons.Add(new Polygon(outLines));
         }
 
-        public static bool IsPointInsideConvexPolygon(Polygon polygon, Point point)
-        {
-            int n = polygon.lines.Count;
 
-            // Handle trivial cases
-            if (n < 3) return false;
-
-            // Binary search to find the correct edge
-            int left = 1, right = n - 1;
-            while (left < right)
-            {
-                int mid = (left + right) / 2;
-                // Check if the point is to the left or right of the edge
-                if (HelperMethods.CrossProduct(polygon.lines[0], polygon.lines[mid], point) < 0)
-                    right = mid; // Move to the left half
-                else
-                    left = mid + 1; // Move to the right half
-            }
-
-            // Check if the point is on the left or right of the found edge
-            return CrossProduct(polygon[left - 1], polygon[left % n], point) >= 0;
-        }
 
         public override string ToString()
         {
