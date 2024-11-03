@@ -8,7 +8,7 @@
   - Graham ✅
   - Jarvis March ✅
   - QuickHull ✅
-  - incremental ⌛ (Bahnas)
+  - incremental ✅ 
   - D&C ⌛ (Amir)
   - Line Intersection ⌛ (Bahnas)
   - Triangulation 1 ⌛ (Mohamed)
