@@ -24,11 +24,19 @@ namespace CGAlgorithms.Algorithms.ConvexHull
 
         public override void Run(List<Point> points, List<Line> lines, List<Polygon> polygons, ref List<Point> outPoints, ref List<Line> outLines, ref List<Polygon> outPolygons)
         {
-            if (points.Count < 3)
+            if (points.Count <= 3)
             {
-                outLines.Add(new Line(points[0], points[1]));
-                outLines.Add(new Line(points[1], points[2]));
-                outLines.Add(new Line(points[2], points[0]));
+                for (int i = 0; i < points.Count; i++)
+                    outPoints.Add(points[i]);
+                if (points.Count == 3)
+                {
+                    outLines.Add(new Line(points[0], points[1]));
+                    outLines.Add(new Line(points[1], points[2]));
+                    outLines.Add(new Line(points[2], points[0]));
+                } else if (points.Count == 2)
+                {
+                    outLines.Add(new Line(points[0], points[1]));
+                }
                 return;
             }
 

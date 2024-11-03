@@ -11,6 +11,13 @@ namespace CGAlgorithms.Algorithms.ConvexHull
     {
         public override void Run(List<Point> points, List<Line> lines, List<Polygon> polygons, ref List<Point> outPoints, ref List<Line> outLines, ref List<Polygon> outPolygons)
         {
+            if (points.Count < 3)
+            {
+                for (int i = 0; i < points.Count; i++)
+                    outPoints.Add(points[i]);
+                return;
+            }
+                
             // Step 1: Get the extreme points
             Point minX = points.OrderBy(p => p.X).First();
             Point maxX = points.OrderByDescending(p => p.X).First();
