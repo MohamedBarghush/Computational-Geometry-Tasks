@@ -1,6 +1,7 @@
 ﻿using CGUtilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,41 +34,63 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                     outLines.Add(new Line(points[0], points[1]));
                     outLines.Add(new Line(points[1], points[2]));
                     outLines.Add(new Line(points[2], points[0]));
-                } else if (points.Count == 2)
+                }
+                else if (points.Count == 2)
                 {
                     outLines.Add(new Line(points[0], points[1]));
                 }
                 return;
             }
 
-            Point start = points.Aggregate((min, p) =>
-                p.Y < min.Y || (p.Y == min.Y && p.X < min.X) ? p : min);
+            // Step 1: Find the leftmost point to start the convex hull (lexicographically smallest)
+            Point start = points[0];
+            foreach (var point in points)
+            {
+                if (point.X < start.X || (point.X == start.X && point.Y < start.Y))
+                    start = point;
+            }
 
+            // Initialize the hull list and add the start point to it
+            List<Point> hull = new List<Point> { start };
             Point current = start;
-            outPoints.Add(current);
 
             do
             {
-                Point next = points[0];
-
-                foreach (var candidate in points)
+                // Step 2(a): Find the angularly rightmost point with respect to the current point
+                Point next = null;
+                foreach (var point in points)
                 {
-                    if (candidate == current) continue;
+                    if (point.Equals(current)) continue;
 
-                    double cross = CrossProduct(current, next, candidate);
-                    if (next == current || cross > 0 || (cross == 0 && Distance(current, candidate) > Distance(current, next)))
+                    if (next == null)
                     {
-                        next = candidate;
+                        next = point;
+                    }
+                    else
+                    {
+                        // Use orientation to check if 'point' is more "right" than 'next'
+                        double orientation = HelperMethods.Orientation(current, next, point);
+                        if (orientation < 0 || (orientation == 0 && Distance(current, point) > Distance(current, next)))
+                        {
+                            next = point;
+                        }
                     }
                 }
 
-                // Add the line from current to next
-                outLines.Add(new Line(current, next));
-                outPoints.Add(next);
-
+                // Step 2(b): Add the chosen point to the hull
+                hull.Add(next);
                 current = next;
 
-            } while (current != start);
+            } while (!current.Equals(start)); // Continue until we loop back to the starting point
+
+            // Step 3: Output the result
+            outPoints.AddRange(hull);
+            HelperMethods.RemoveDuplicatePoints(ref outPoints);
+            for (int i = 0; i < hull.Count - 1; i++)
+            {
+                outLines.Add(new Line(hull[i], hull[i + 1]));
+            }
+            outLines.Add(new Line(hull[hull.Count - 1], hull[0]));
         }
         public override string ToString()
         {
