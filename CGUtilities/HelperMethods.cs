@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -120,6 +121,22 @@ namespace CGUtilities
         public static double Orientation(Point p, Point q, Point r)
         {
             return (q.Y - p.Y) * (r.X - q.X) - (q.X - p.X) * (r.Y - q.Y);
+        }
+
+        // Remove duplicates from a list of points
+        public static void RemoveDuplicatePoints (ref List<Point> points)
+        {
+            for (int j = 0; j < points.Count; j++)
+            {
+                for (int i = j + 1; i < points.Count; i++)
+                {
+                    if (points[j].Equals(points[i]))
+                    {
+                        points.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
         }
     }
 }
