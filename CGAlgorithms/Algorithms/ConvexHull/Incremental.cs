@@ -25,13 +25,11 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                 return;
             }
 
-            // Sort points by x-coordinate, and by y-coordinate if x-coordinates are the same
             points = points.OrderBy(p => p.X).ThenBy(p => p.Y).ToList();
 
             List<Point> lower = new List<Point>();
             foreach (var p in points)
             {
-                // Remove points from the lower hull if they cause a clockwise turn
                 while (lower.Count >= 2 && HelperMethods.Orientation(lower[lower.Count - 2], lower[lower.Count - 1], p) <= 0)
                 {
                     lower.RemoveAt(lower.Count - 1);
@@ -42,7 +40,6 @@ namespace CGAlgorithms.Algorithms.ConvexHull
             for (int i = points.Count - 1; i >= 0; i--)
             {
                 var p = points[i];
-                // Remove points from the upper hull if they cause a clockwise turn
                 while (upper.Count >= 2 && HelperMethods.Orientation(upper[upper.Count - 2], upper[upper.Count - 1], p) <= 0)
                 {
                     upper.RemoveAt(upper.Count - 1);
@@ -50,11 +47,9 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                 upper.Add(p);
             }
 
-            // Remove the last point of each half as they are duplicated
             lower.RemoveAt(lower.Count - 1);
             upper.RemoveAt(upper.Count - 1);
 
-            // Concatenate lower and upper hulls to get the complete convex hull
             lower.AddRange(upper);
 
             foreach (Point p in lower) outPoints.Add(p);

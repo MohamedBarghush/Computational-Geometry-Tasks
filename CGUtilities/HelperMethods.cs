@@ -137,6 +137,9 @@ namespace CGUtilities
                     }
                 }
             }
+        public static double distanceSq(Point a, Point b)
+        {
+            return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
         }
     }
 }

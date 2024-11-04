@@ -8,6 +8,15 @@ namespace CGAlgorithms.Algorithms.SegmentIntersection
 {
     class SweepLine:Algorithm
     {
+        /*
+        for each point check the follow:
+        - start: insert it, check with upper and lower segment intersection.
+          add resulting intersection point to the list
+        - End: remove it, and check upper with lower intersects and add new point if needed
+        - Intersection: flip lines on that point and check with upper over lines, and lower
+
+        Data
+         */ 
         public override void Run(List<CGUtilities.Point> points, List<CGUtilities.Line> lines, List<CGUtilities.Polygon> polygons, ref List<CGUtilities.Point> outPoints, ref List<CGUtilities.Line> outLines, ref List<CGUtilities.Polygon> outPolygons)
         {
 

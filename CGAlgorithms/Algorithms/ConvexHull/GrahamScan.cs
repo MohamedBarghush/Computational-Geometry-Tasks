@@ -14,17 +14,7 @@ namespace CGAlgorithms.Algorithms.ConvexHull
 
         public override void Run(List<Point> points, List<Line> lines, List<Polygon> polygons, ref List<Point> outPoints, ref List<Line> outLines, ref List<Polygon> outPolygons)
         {
-            if (points.Count < 4)
-            {
-                foreach (Point p in points)
-                {
-                    outPoints.Add(p);
-                }
-                outLines.Add(new Line(points[0], points[1]));
-                outLines.Add(new Line(points[1], points[2]));
-                outLines.Add(new Line(points[2], points[0]));
-                return;
-            }
+            
 
             Point lower = points[0];
             foreach (Point p in points)
@@ -35,24 +25,23 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                 }
             }
 
-            points.Sort((a, b) => calcAngle(lower.X, lower.Y, a.X, a.Y).CompareTo(calcAngle(lower.X, lower.Y, b.X, b.Y)));
+            points.Sort((a, b) =>
+            {
+                if (HelperMethods.Orientation(lower, a, b) == 0)
+                {
+                    return HelperMethods.distanceSq(lower,a).CompareTo(HelperMethods.distanceSq(lower,b));
+                }
 
-            List<Point> uniquePoints = new List<Point> { lower };
+                return HelperMethods.Orientation(lower, a, b) < 0 ? -1 : 1;
+            });
+
+            
+
+            List<Point> stk = new List<Point> { points[0] };
+
             for (int i = 1; i < points.Count; i++)
             {
-                while (i < points.Count - 1 &&
-                       Math.Abs(calcAngle(lower.X, lower.Y, points[i].X, points[i].Y) - calcAngle(lower.X, lower.Y, points[i + 1].X, points[i + 1].Y)) < 1e-9)
-                {
-                    i++;
-                }
-                uniquePoints.Add(points[i]);
-            }
-
-            List<Point> stk = new List<Point> { uniquePoints[0], uniquePoints[1] };
-
-            for (int i = 2; i < uniquePoints.Count; i++)
-            {
-                Point p3 = uniquePoints[i];
+                Point p3 = points[i];
                 while (stk.Count > 1 && HelperMethods.CheckTurn(new Line(stk[stk.Count - 2], stk[stk.Count - 1]), p3) != Enums.TurnType.Left)
                 {
                     stk.RemoveAt(stk.Count - 1);
@@ -60,12 +49,13 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                 stk.Add(p3);
             }
 
-            foreach (Point p in stk) outPoints.Add(p);
-            stk.Add(stk[0]);
+            if (stk.Count == 2 && stk[stk.Count - 1] == stk[stk.Count - 2]) stk.RemoveAt(stk.Count - 1);
 
-            for (int i = 0; i < stk.Count - 1; i++)
+            foreach (Point p in stk) outPoints.Add(p);
+
+            for (int i = 0; i < stk.Count; i++)
             {
-                outLines.Add(new Line(stk[i], stk[i + 1]));
+                outLines.Add(new Line(stk[i], stk[(i + 1)%stk.Count]));
             }
 
             outPolygons.Add(new Polygon(outLines));
