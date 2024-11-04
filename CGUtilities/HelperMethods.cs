@@ -124,7 +124,7 @@ namespace CGUtilities
         }
 
         // Remove duplicates from a list of points
-        public static void RemoveDuplicatePoints (ref List<Point> points)
+        public static void RemoveDuplicatePoints(ref List<Point> points)
         {
             for (int j = 0; j < points.Count; j++)
             {
@@ -137,6 +137,7 @@ namespace CGUtilities
                     }
                 }
             }
+        }
         public static double distanceSq(Point a, Point b)
         {
             return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
