@@ -25,24 +25,20 @@ namespace CGAlgorithms.Algorithms.ConvexHull
 
         public override void Run(List<Point> points, List<Line> lines, List<Polygon> polygons, ref List<Point> outPoints, ref List<Line> outLines, ref List<Polygon> outPolygons)
         {
-            if (points.Count <= 3)
+            // base case
+            if (points.Count < 4)
             {
+                foreach (Point p in points) outPoints.Add(p);
                 for (int i = 0; i < points.Count; i++)
-                    outPoints.Add(points[i]);
-                if (points.Count == 3)
                 {
-                    outLines.Add(new Line(points[0], points[1]));
-                    outLines.Add(new Line(points[1], points[2]));
-                    outLines.Add(new Line(points[2], points[0]));
+                    outLines.Add(new Line(points[i], points[(i + 1) % points.Count]));
                 }
-                else if (points.Count == 2)
-                {
-                    outLines.Add(new Line(points[0], points[1]));
-                }
+                outPolygons.Add(new Polygon(outLines));
                 return;
             }
 
-            // Step 1: Find the leftmost point to start the convex hull (lexicographically smallest)
+            // Rest of the algorithm for more than 3 points
+
             Point start = points[0];
             foreach (var point in points)
             {
@@ -50,13 +46,11 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                     start = point;
             }
 
-            // Initialize the hull list and add the start point to it
-            List<Point> hull = new List<Point> { start };
+            List<Point> hull = new List<Point> { };
             Point current = start;
 
             do
             {
-                // Step 2(a): Find the angularly rightmost point with respect to the current point
                 Point next = null;
                 foreach (var point in points)
                 {
@@ -68,7 +62,6 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                     }
                     else
                     {
-                        // Use orientation to check if 'point' is more "right" than 'next'
                         double orientation = HelperMethods.Orientation(current, next, point);
                         if (orientation < 0 || (orientation == 0 && Distance(current, point) > Distance(current, next)))
                         {
@@ -77,15 +70,12 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                     }
                 }
 
-                // Step 2(b): Add the chosen point to the hull
                 hull.Add(next);
                 current = next;
 
-            } while (!current.Equals(start)); // Continue until we loop back to the starting point
+            } while (!current.Equals(start));
 
-            // Step 3: Output the result
             outPoints.AddRange(hull);
-            HelperMethods.RemoveDuplicatePoints(ref outPoints);
             for (int i = 0; i < hull.Count - 1; i++)
             {
                 outLines.Add(new Line(hull[i], hull[i + 1]));

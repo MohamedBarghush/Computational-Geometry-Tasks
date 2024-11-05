@@ -11,32 +11,15 @@ namespace CGAlgorithms.Algorithms.ConvexHull
     {
         public override void Run(List<Point> points, List<Line> lines, List<Polygon> polygons, ref List<Point> outPoints, ref List<Line> outLines, ref List<Polygon> outPolygons)
         {
-            // Handle cases where the number of points is 1, 2, or 3 directly
-            if (points.Count == 1)
+            // base case
+            if (points.Count < 4)
             {
-                outPoints.Add(points[0]);
+                foreach (Point p in points) outPoints.Add(p);
+                for (int i = 0; i < points.Count; i++)
+                    outLines.Add(new Line(points[i], points[(i + 1) % points.Count]));
+                outPolygons.Add(new Polygon(outLines));
                 return;
             }
-            else if (points.Count == 2)
-            {
-                outPoints.Add(points[0]);
-                outPoints.Add(points[1]);
-                outLines.Add(new Line(points[0], points[1]));
-                return;
-            }
-            else if (points.Count == 3)
-            {
-                outPoints.Add(points[0]);
-                outPoints.Add(points[1]);
-                outLines.Add(new Line(points[0], points[1]));
-                outPoints.Add(points[2]);
-                outLines.Add(new Line(points[1], points[2]));
-                outLines.Add(new Line(points[2], points[0]));
-                return;
-            }
-
-            // Remove duplicate points from the input
-            HelperMethods.RemoveDuplicatePoints(ref points);
 
             // Iterate over pairs of points to determine if they form part of the convex shape
             for (int i = 0; i < points.Count; i++)
@@ -59,9 +42,7 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                         if (turnType != Enums.TurnType.Colinear)
                         {
                             if (firstTurnType == null)
-                            {
                                 firstTurnType = turnType;
-                            }
                             else if (turnType != firstTurnType)
                             {
                                 allOnSameSide = false;
@@ -81,30 +62,20 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                     // If all points are on the same side, add the line and points
                     if (allOnSameSide)
                     {
+                        // Lines
                         Line line = new Line(points[i], points[j]);
-
                         if (!outLines.Contains(line))
-                        {
                             outLines.Add(line);
-                        }
 
+                        // points
                         if (!outPoints.Contains(points[i]))
-                        {
                             outPoints.Add(points[i]);
-                        }
 
                         if (!outPoints.Contains(points[j]))
-                        {
                             outPoints.Add(points[j]);
-                        }
                     }
                 }
             }
-            foreach (Point p in outPoints)
-            {
-                Console.WriteLine(p.X + " " + p.Y);
-            }
-
         }
 
         public override string ToString()

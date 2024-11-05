@@ -40,9 +40,7 @@ namespace CGAlgorithms.Algorithms.ConvexHull
                     {
                         if (i == l || j == l || k == l) continue;
                         if (HelperMethods.PointInTriangle(i, j, k, l) != Enums.PointInPolygon.Outside)
-                        {
                             return true;
-                        }
                     }
                 }
             }
