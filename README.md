@@ -9,7 +9,7 @@
   - Jarvis March ✅
   - QuickHull ✅
   - incremental ✅ 
-  - D&C ⌛ (Amir)
+  - D&C ✅
   - Line Intersection ⌛ (Bahnas)
   - Triangulation 1 ⌛ (Mohamed)
   
