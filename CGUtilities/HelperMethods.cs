@@ -138,6 +138,23 @@ namespace CGUtilities
                 }
             }
         }
+           
+        public static List<Point> RemoveColliners(ref List<Point> vec)
+        {
+            List<Point> take = new List<Point>();
+            int n = vec.Count;
+            for (int i = 0; i < n; )
+            {
+                take.Add(vec[i]);
+                int j = i + 1;
+                while(CheckTurn(new Line(vec[i], vec[(j)%n]), vec[(j + 1)%n]) == Enums.TurnType.Colinear)
+                {
+                    j = j + 1;
+                }
+                i = j;
+            }
+            return take;
+        }
         public static double distanceSq(Point a, Point b)
         {
             return (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
