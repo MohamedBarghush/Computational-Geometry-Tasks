@@ -160,6 +160,7 @@ namespace CGAlgorithms.Algorithms.ConvexHull
             Point lowerLeftPoint = LeftSide[lowerLeftIndex];
             Point lowerRightPoint = RightSide[lowerRightIndex];
              //hello world 
+             //hello world 
             Line right = new Line(upperRightPoint, lowerRightPoint);
             for (int i = 0; i < RightSide.Count; i++)
             {
