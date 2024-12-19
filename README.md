@@ -12,4 +12,7 @@
   - D&C ✅
   - Line Intersection ⌛ (Bahnas)
   - Triangulation 1 ⌛ (Mohamed)
+
+  - #### Sweep DOZ
+  - sweep line ✅
   
