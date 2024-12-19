@@ -328,7 +328,7 @@ namespace CGAlgorithms.Algorithms.SegmentIntersection
             while(events.Count>0)
             {
                 Events ev = new Events(events[0].p, events[0].flag, events[0].idx);
-                Console.WriteLine(ev.p.X + " " + ev.p.Y + " "+ev.flag);
+                //Console.WriteLine(ev.p.X + " " + ev.p.Y + " "+ev.flag);
                 events.RemoveAt(0);
                 //Console.WriteLine("H");
                 double cur_x = ev.p.X;
@@ -382,11 +382,11 @@ namespace CGAlgorithms.Algorithms.SegmentIntersection
                     outPoints.Add(new Point (ev.p.X,ev.p.Y));
                     int prv = handler.get_prev(ref sweep, ev.p.Y);
                     int nxt = handler.get_next(ref sweep, ev.p.Y);
-                    Console.WriteLine(prv + " - " + nxt);
-                    for (int i = 0; i < sweep.Count; i++)
-                    {
-                        Console.WriteLine(sweep[i].Y + " -- " + sweep[i].get_idx());
-                    }
+                    //Console.WriteLine(prv + " - " + nxt);
+                    //for (int i = 0; i < sweep.Count; i++)
+                    //{
+                    //    Console.WriteLine(sweep[i].Y + " -- " + sweep[i].get_idx());
+                    //}
                     if (prv != -1)
                     {
                         if (prv > 0)

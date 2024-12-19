@@ -10,8 +10,10 @@
   - QuickHull ✅
   - incremental ✅ 
   - D&C ✅
-  - Line Intersection ⌛ (Bahnas)
-  - Triangulation 1 ⌛ (Mohamed)
+
+  - #### triangolation DOZ
+  - subtract ears ✅
+
 
   - #### Sweep DOZ
   - sweep line ✅
